@@ -1,0 +1,66 @@
+# available filter types:
+# eq equals
+# neq not equals
+# gt greater than
+# gte greater than or equals
+# in sepatate by commas
+# isnull
+# lt lower than
+# lte lower than or equals
+# not/ne sepatate by commas
+# not_in/nin
+# like/ilike
+apps:
+- name: "Person"
+  table_name: "person"
+  humanized_name: "Люди"
+  table_cols:
+  - name: "id"
+    type: "int"
+  - name: "name"
+    type: "str"
+  - name: "age"
+    type: "int"
+  - name: "sex"
+    type: "str"
+  filters:
+  - col: "name"
+    types: 
+    - ilike
+    - neq
+    - eq
+  - col: "sex"
+    types: 
+    - eq
+  - col: "age"
+    types:
+    - gte
+- name: "Example2"
+  table_name: "exmaple2"
+  humanized_name: "Пример2"
+  table_cols:
+  - name: "id"
+    type: "int"
+  - name: "name"
+    type: "str"
+  filters:
+  - col: "name"
+    types: 
+    - ilike
+    - neq
+- name: "Company"
+  table_name: "company"
+  humanized_name: "Компании"
+  table_cols:
+  - name: "id"
+    type: "int"
+  - name: "name_ru"
+    type: "str"
+  - name: "name_kz"
+    type: "str"
+  - name: "is_active"
+    type: "bool"
+  filters:
+  - col: "is_active"
+    types:
+    - eq
