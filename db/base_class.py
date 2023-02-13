@@ -1,13 +1,19 @@
-from typing import Any
+from sqlalchemy import Table
+from typing import Any, Tuple
 
-from sqlalchemy.ext.declarative import as_declarative, declared_attr
+from sqlalchemy.orm import as_declarative
 
+from db.meta import meta
 
-@as_declarative()
+@as_declarative(metadata=meta)
 class Base:
-    id: Any
-    __name__: str
-    # Generate __tablename__ automatically
-    @declared_attr
-    def __tablename__(cls) -> str:
-        return cls.__name__.lower()
+    """
+    Base for all models.
+
+    It has some type definitions to
+    enhance autocompletion.
+    """
+    pass
+    # __tablename__: str
+    # __table__: Table
+    # __table_args__: Tuple[Any, ...]

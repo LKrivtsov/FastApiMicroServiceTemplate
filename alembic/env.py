@@ -7,6 +7,9 @@ from alembic import context
 
 from settings import settings
 
+from models import load_all_models
+from db.base_class import Base
+
 # ---------------- added code here -------------------------#
 import os, sys
 from dotenv import load_dotenv
@@ -41,9 +44,11 @@ if config.config_file_name is not None:
 # import models
 # from models import ex_model
 # from models import ex_model1
-from models import models
-target_metadata = models.Base.metadata
-# target_metadata = None
+# from models import models
+# target_metadata = models.Base.metadata
+target_metadata = Base.metadata
+load_all_models()
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

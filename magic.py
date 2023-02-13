@@ -16,7 +16,7 @@ def get_col_full_type(name):
         return "Boolean"
     if name == 'datetime':
         return "DateTime"
-    if name == 'roreign_key':
+    if name == 'foreign_key':
         return 'ForeignKey'
     if name == 'float':
         return 'Float'
@@ -30,7 +30,7 @@ with open("config.yml", "r") as file:
         text_file = open(f"./apps/{app['name'].lower()}/db.py", "w")
         n = text_file.write(
             """from db.base_crud import CRUDBase
-from models.models import {name}Model
+from models.{name_lower} import {name}Model
 from . import schema
 
 
@@ -130,7 +130,7 @@ class {name}InDb({name}):
         n = text_file.write(
             """from typing import Optional
 from fastapi_filter.contrib.sqlalchemy import Filter
-from models.models import {name}Model
+from models.{name_lower} import {name}Model
 
 
 class Filter{name}(Filter):
@@ -139,7 +139,7 @@ class Filter{name}(Filter):
         model = {name}Model
 
     order_by: Optional[list[str]]""".format(
-                main_filter=main_filter, name=app["name"]
+                main_filter=main_filter, name=app["name"], name_lower=app["name"].lower()
             )
         )
         text_file.close()
@@ -153,9 +153,12 @@ class Filter{name}(Filter):
                 column = f"    {col['name']} = Column({get_col_full_type(col['type'])})\n"
             columns += column
         
-        text_file = open(f"./models/models.py", "a")
+        text_file = open(f"./models/{app['name'].lower()}.py", "w")
         n = text_file.write(
-            """class {name}Model(Base):
+            """from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Float
+from db.base_class import Base
+class {name}Model(Base):
     __tablename__ = "{table_name}"
 {columns}""".format(
                 name=app["name"], table_name=app["table_name"], columns=columns
