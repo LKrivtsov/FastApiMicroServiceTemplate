@@ -14,6 +14,12 @@ def get_col_full_type(name):
         return "String"
     if name == 'bool':
         return "Boolean"
+    if name == 'datetime':
+        return "DateTime"
+    if name == 'roreign_key':
+        return 'ForeignKey'
+    if name == 'float':
+        return 'Float'
 
 with open("config.yml", "r") as file:
     data = yaml.load(file, Loader=yaml.FullLoader)
@@ -163,3 +169,5 @@ class Filter{name}(Filter):
         text_file.write(f"api_router.include_router({app['name'].lower()}_endpoints, prefix='/{app['name'].lower()}', tags=['{app['humanized_name']}'])\n")
         
         text_file.close()
+
+os.system("python -m alembic revision --autogenerate -m 'first migration' && python -m alembic upgrade head")
