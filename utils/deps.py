@@ -1,5 +1,6 @@
-from fastapi import Request
 from typing import Generator
+
+from fastapi import Request
 
 
 def get_db(request: Request) -> Generator:

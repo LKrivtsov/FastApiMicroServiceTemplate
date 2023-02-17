@@ -1,23 +1,19 @@
+# ---------------- added code here -------------------------#
+import os
+import sys
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from dotenv import load_dotenv
+from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-
-from settings import settings
-
-from models import load_all_models
 from db.base_class import Base
-
-# ---------------- added code here -------------------------#
-import os, sys
-from dotenv import load_dotenv
+from models import load_all_models
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 sys.path.append(BASE_DIR)
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -28,7 +24,9 @@ DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 DB_HOST = os.getenv("DB_HOST", "")
 DB_PORT = os.getenv("DB_PORT", "")
 DB_NAME = os.getenv("DB_NAME", "")
-SQLALCHEMY_DATABASE_URI=f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}" 
+SQLALCHEMY_DATABASE_URI = (
+    f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+)
 
 
 config.set_main_option("sqlalchemy.url", SQLALCHEMY_DATABASE_URI)
@@ -95,7 +93,8 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
         )
 
         with context.begin_transaction():

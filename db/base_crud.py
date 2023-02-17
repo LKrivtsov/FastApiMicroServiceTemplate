@@ -1,11 +1,12 @@
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
+
 from fastapi.encoders import jsonable_encoder
+from fastapi_pagination import paginate
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette.exceptions import HTTPException
 
 from db.base_class import Base
-from fastapi_pagination import paginate
 
 ModelType = TypeVar("ModelType", bound=Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -30,7 +31,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         query = db.query(self.model)
         query = filter.sort(query)
         query = filter.filter(query)
-        result = db.execute(query)        
+        result = db.execute(query)
         return paginate(result.scalars().all())
 
     def create(self, *, db: Session, obj_in: CreateSchemaType) -> ModelType:

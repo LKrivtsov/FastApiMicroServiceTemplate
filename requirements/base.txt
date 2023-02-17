@@ -1,0 +1,9 @@
+alembic==1.9.3
+fastapi==0.88.0
+fastapi-filter==0.5.1
+fastapi-pagination==0.11.3
+psycopg2-binary==2.9.5
+python-dotenv==0.21.1
+PyYAML==6.0
+SQLAlchemy==2.0.2
+uvicorn==0.20.0

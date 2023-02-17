@@ -1,3 +1,6 @@
-.env
-venv/*
+venv/
+.venv/
+.mypy_cache/
 
+.env
+.DS_Storage

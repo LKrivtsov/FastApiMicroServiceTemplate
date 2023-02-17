@@ -25,12 +25,12 @@ apps:
     type: "str"
   filters:
   - col: "name"
-    types: 
+    types:
     - ilike
     - neq
     - eq
   - col: "sex"
-    types: 
+    types:
     - eq
   - col: "age"
     types:
@@ -45,7 +45,7 @@ apps:
     type: "str"
   filters:
   - col: "name"
-    types: 
+    types:
     - ilike
     - neq
 - name: "Company"

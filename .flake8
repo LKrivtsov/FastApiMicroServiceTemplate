@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 88
+exclude = ./tests/, ./alembic/migrations/, .venv/, venv/
+ignore = WPS305, Q000
+rst-roles = class, func, ref,

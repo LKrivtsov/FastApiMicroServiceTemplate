@@ -1,25 +1,28 @@
-import yaml
-from pprint import pprint
 import os
 
+import yaml
+
+
 def get_col_type(col_name, app):
-    for col in app['table_cols']:
-        if col['name'] == col_name:
-            return col['type']    
+    for col in app["table_cols"]:
+        if col["name"] == col_name:
+            return col["type"]
+
 
 def get_col_full_type(name):
-    if name == 'int':
+    if name == "int":
         return "Integer"
-    if name == 'str':
+    if name == "str":
         return "String"
-    if name == 'bool':
+    if name == "bool":
         return "Boolean"
-    if name == 'datetime':
+    if name == "datetime":
         return "DateTime"
-    if name == 'foreign_key':
-        return 'ForeignKey'
-    if name == 'float':
-        return 'Float'
+    if name == "foreign_key":
+        return "ForeignKey"
+    if name == "float":
+        return "Float"
+
 
 with open("config.yml", "r") as file:
     data = yaml.load(file, Loader=yaml.FullLoader)
@@ -40,8 +43,9 @@ class {name}DB(CRUDBase[{name}Model, schema.{name}, schema.{name}InDb]):
 
 {name_lower}_crud = {name}DB({name}Model)
         """.format(
-                name=app["name"], name_lower=app["name"].lower()
-            )
+                name=app["name"],
+                name_lower=app["name"].lower(),
+            ),
         )
         text_file.close()
         # create endpoints file
@@ -65,7 +69,7 @@ async def list(
     *,
     db: Session = Depends(get_db),
     filter: Filter{name} = FilterDepends(Filter{name})
-):    
+):
     return {name_lower}_crud.get_multi(filter, db=db)
 
 
@@ -89,8 +93,10 @@ async def item(*, id: int, item: {name}, db: Session = Depends(get_db)):
 async def item(*, id: int, db: Session = Depends(get_db)):
     return {name_lower}_crud.remove(db=db, id=id)
 """.format(
-                name=app["name"], name_lower=app["name"].lower(), id="{id}"
-            )
+                name=app["name"],
+                name_lower=app["name"].lower(),
+                id="{id}",
+            ),
         )
         text_file.close()
         # create schema file
@@ -104,22 +110,23 @@ async def item(*, id: int, db: Session = Depends(get_db)):
             """from typing import List
 from pydantic import BaseModel
 
-class {name}(BaseModel):    
+class {name}(BaseModel):
 {main_schema}
 
 class {name}InDb({name}):
-    id: int    
+    id: int
 
     class Config:
         orm_mode = True
 """.format(
-                main_schema=main_schema, name=app["name"]
-            )
+                main_schema=main_schema,
+                name=app["name"],
+            ),
         )
         text_file.close()
         # create filters file
         main_filter = ""
-        for filter_item in app["filters"]:      
+        for filter_item in app["filters"]:
             for filter_type in filter_item["types"]:
                 if filter_type == "eq":
                     filter = f"    {filter_item['col']}: Optional[{get_col_type(filter_item['col'], app)}]\n"
@@ -139,8 +146,10 @@ class Filter{name}(Filter):
         model = {name}Model
 
     order_by: Optional[list[str]]""".format(
-                main_filter=main_filter, name=app["name"], name_lower=app["name"].lower()
-            )
+                main_filter=main_filter,
+                name=app["name"],
+                name_lower=app["name"].lower(),
+            ),
         )
         text_file.close()
 
@@ -150,9 +159,11 @@ class Filter{name}(Filter):
             if col["name"] == "id":
                 column = "    id = Column(Integer, primary_key=True, index=True)\n"
             else:
-                column = f"    {col['name']} = Column({get_col_full_type(col['type'])})\n"
+                column = (
+                    f"    {col['name']} = Column({get_col_full_type(col['type'])})\n"
+                )
             columns += column
-        
+
         text_file = open(f"./models/{app['name'].lower()}.py", "w")
         n = text_file.write(
             """from sqlalchemy.ext.declarative import declarative_base
@@ -161,16 +172,24 @@ from db.base_class import Base
 class {name}Model(Base):
     __tablename__ = "{table_name}"
 {columns}""".format(
-                name=app["name"], table_name=app["table_name"], columns=columns
-            )
+                name=app["name"],
+                table_name=app["table_name"],
+                columns=columns,
+            ),
         )
         text_file.close()
-        
+
         # add to routes
         text_file = open(f"./api/v1/router.py", "a")
-        text_file.write(f"from apps.{app['name'].lower()}.endpoints import router as {app['name'].lower()}_endpoints\n")
-        text_file.write(f"api_router.include_router({app['name'].lower()}_endpoints, prefix='/{app['name'].lower()}', tags=['{app['humanized_name']}'])\n")
-        
+        text_file.write(
+            f"from apps.{app['name'].lower()}.endpoints import router as {app['name'].lower()}_endpoints\n",
+        )
+        text_file.write(
+            f"api_router.include_router({app['name'].lower()}_endpoints, prefix='/{app['name'].lower()}', tags=['{app['humanized_name']}'])\n",
+        )
+
         text_file.close()
 
-os.system("python -m alembic revision --autogenerate -m 'first migration' && python -m alembic upgrade head")
+os.system(
+    "python -m alembic revision --autogenerate -m 'first migration' && python -m alembic upgrade head",
+)

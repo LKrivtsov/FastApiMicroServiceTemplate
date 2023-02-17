@@ -1,7 +1,8 @@
-from settings import settings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool
+
+from settings import settings
 
 engine = create_engine(
     settings.SQLALCHEMY_DATABASE_URI,

@@ -1,9 +1,7 @@
-from sqlalchemy import Table
-from typing import Any, Tuple
-
 from sqlalchemy.orm import as_declarative
 
 from db.meta import meta
+
 
 @as_declarative(metadata=meta)
 class Base:
@@ -13,7 +11,7 @@ class Base:
     It has some type definitions to
     enhance autocompletion.
     """
-    pass
+
     # __tablename__: str
     # __table__: Table
     # __table_args__: Tuple[Any, ...]

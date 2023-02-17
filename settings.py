@@ -1,8 +1,9 @@
+from typing import Any, Dict, Optional
+
 from pydantic import BaseSettings, validator
-from typing import Any, Dict, List, Optional
 
 
-class Settings(BaseSettings):
+class Settings(BaseSettings):  # noqa: WPS115
     PROJECT_NAME: str
     # DB
     DB_HOST: str
@@ -17,13 +18,13 @@ class Settings(BaseSettings):
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if isinstance(v, str):
             return v
-        DB_USER = values.get("DB_USER")
-        DB_PASSWORD = values.get("DB_PASSWORD")
-        DB_HOST = values.get("DB_HOST")
-        DB_PORT = values.get("DB_PORT")
-        DB_NAME = values.get("DB_NAME")
-        CON_STR = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-        return CON_STR
+        db_user = values.get("DB_USER")
+        db_password = values.get("DB_PASSWORD")
+        db_host = values.get("DB_HOST")
+        db_port = values.get("DB_PORT")
+        db_name = values.get("DB_NAME")
+        connection_str = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+        return connection_str
 
     POOL_SIZE: int
     MAX_OVERFLOW: int
