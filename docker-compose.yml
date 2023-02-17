@@ -8,3 +8,10 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+  redis:
+    image: redis
+    command: redis-server --requirepass ${REDIS_PWD}
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PWD={$REDIS_PWD}

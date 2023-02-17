@@ -11,56 +11,42 @@
 # not_in/nin
 # like/ilike
 apps:
-- name: "Person"
-  table_name: "person"
-  humanized_name: "Люди"
+- name: "User"
+  table_name: "users"
+  humanized_name: "Пользователи"
   table_cols:
   - name: "id"
     type: "int"
-  - name: "name"
+  - name: "email"
     type: "str"
-  - name: "age"
-    type: "int"
-  - name: "sex"
+  - name: "password"
     type: "str"
-  filters:
-  - col: "name"
-    types: 
-    - ilike
-    - neq
-    - eq
-  - col: "sex"
-    types: 
-    - eq
-  - col: "age"
-    types:
-    - gte
-- name: "Example2"
-  table_name: "exmaple2"
-  humanized_name: "Пример2"
-  table_cols:
-  - name: "id"
-    type: "int"
-  - name: "name"
+  - name: "middlename"
     type: "str"
-  filters:
-  - col: "name"
-    types: 
-    - ilike
-    - neq
-- name: "Company"
-  table_name: "company"
-  humanized_name: "Компании"
-  table_cols:
-  - name: "id"
-    type: "int"
-  - name: "name_ru"
+  - name: "firstname"
     type: "str"
-  - name: "name_kz"
+  - name: "lastname"
+    type: "str"
+  - name: "is_email_confirmed"
+    type: "bool"
+  - name: "email_confirmed_at"
+    type: "datetime"
+  - name: "phone"
+    type: "str"
+  - name: "iin"
     type: "str"
   - name: "is_active"
     type: "bool"
+  - name: "is_admin"
+    type: "bool"
+  - name: "created_at"
+    type: "datetime"
+  - name: "last_seen_at"
+    type: "datetime"
+  - name: "id_card"
+    type: "str"
+  
   filters:
-  - col: "is_active"
-    types:
+  - col: "email"
+    types: 
     - eq

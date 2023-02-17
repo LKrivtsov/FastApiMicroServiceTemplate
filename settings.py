@@ -29,9 +29,17 @@ class Settings(BaseSettings):
     MAX_OVERFLOW: int
     POOL_RECYCLE: int
 
+    #REDIS
+    REDIS_HOST: str
+    REDIS_PORT: str
+    REDIS_PWD: str
+    REDIS_DB_SESSIONS: str
+    REDIS_DB_USERS: str
+
     class Config:
         case_sensitive = True
         env_file = ".env"
 
+    SECRET_KEY: str
 
 settings = Settings()
